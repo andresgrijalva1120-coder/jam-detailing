@@ -219,3 +219,13 @@ select option { color: var(--ink); background: #0f0f10; }
   .member { grid-row: span 5; grid-template-rows: subgrid; row-gap: 14px; }
 }
 .member .bio { align-self: start; }
+
+/* Booking form after a request is sent: hide the fields, show the confirmation */
+form.is-locked > *:not(.form-done) { display: none; }
+.form-done { display: grid; gap: 10px; justify-items: center; text-align: center; padding: 24px 8px; }
+.form-done[hidden] { display: none; }
+.form-done-icon { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; font-size: 30px; font-weight: 800;
+  color: #fff; background: linear-gradient(150deg, var(--rasp), var(--rasp-deep)); box-shadow: 0 10px 26px -8px color-mix(in srgb, var(--rasp) 80%, transparent); }
+.form-done h3 { font-size: 26px; font-weight: 800; }
+.form-done p { color: var(--muted); max-width: 40ch; }
+.form-done .form-done-small { font-size: 14px; color: #9a9aa0; }

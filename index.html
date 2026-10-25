@@ -241,6 +241,12 @@
       </div>
       <button class="btn btn-sun" type="submit" id="f-submit">Send booking request</button>
       <p class="form-msg" id="form-msg" role="status" hidden></p>
+      <div class="form-done" id="form-done" role="status" hidden>
+        <div class="form-done-icon" aria-hidden="true">✓</div>
+        <h3 id="form-done-title">Request sent!</h3>
+        <p id="form-done-text"></p>
+        <p class="form-done-small">Need to change something? Call or text us at <span style="white-space: nowrap">(520) 000-0000</span>.</p>
+      </div>
     </form>
   </div>
 </section>
@@ -373,15 +379,40 @@
     update();
   })();
 
-  // Sends the booking to Web3Forms without leaving the page, then shows a confirmation.
+  // Sends the booking to Web3Forms without leaving the page, then locks the form.
+  // One request per visitor: after a successful send the form is replaced with a confirmation,
+  // and this browser can't send another one for 24 hours (so impatient re-clicks don't flood the inbox).
   var form = document.getElementById('booking-form');
   var msg = document.getElementById('form-msg');
   var btn = document.getElementById('f-submit');
+  var LOCK_KEY = 'jam-booking-sent';
+  var LOCK_HOURS = 24;
+  var sending = false;
+
+  function lockedAt() {
+    try { var t = Number(localStorage.getItem(LOCK_KEY)); return t && (Date.now() - t) < LOCK_HOURS * 3600e3 ? t : 0; }
+    catch (err) { return 0; }
+  }
+  function lockForm(justSent) {
+    form.classList.add('is-locked');
+    form.querySelectorAll('input, select, textarea, button').forEach(function (el) { el.disabled = true; });
+    var done = document.getElementById('form-done');
+    done.hidden = false;
+    document.getElementById('form-done-title').textContent = justSent ? 'Request sent!' : 'Request already sent';
+    document.getElementById('form-done-text').textContent = justSent
+      ? "Thanks! We got your booking request and will reach out soon to confirm your time. No need to send it again."
+      : "Looks like you already sent us a booking request. We'll reach out soon to confirm. No need to send another one.";
+  }
+  if (lockedAt()) lockForm(false);
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (sending || lockedAt()) return;          // ignore double-clicks and repeat sends
     if (!form.reportValidity()) return;
+    sending = true;
     btn.disabled = true;
     btn.textContent = 'Sending...';
+    msg.hidden = true;
     var data = new FormData(form);
     data.delete('redirect');
     fetch('https://api.web3forms.com/submit', {
@@ -392,19 +423,24 @@
       .then(function (res) { return res.json(); })
       .then(function (json) {
         if (json.success) {
-          msg.textContent = "Thanks! Your booking request was sent. We'll reach out soon to confirm your time.";
-          form.reset();
+          try { localStorage.setItem(LOCK_KEY, String(Date.now())); } catch (err) {}
+          lockForm(true);
+          document.getElementById('form-done').scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
-          msg.textContent = 'Something went wrong sending your request. Please call or text (520) 000-0000 instead.';
+          msg.textContent = 'Something went wrong sending your request. Please try again in a moment, or call or text (520) 000-0000.';
+          msg.hidden = false;
         }
       })
       .catch(function () {
-        msg.textContent = 'Your request could not be sent. Check your connection, or call or text (520) 000-0000.';
+        msg.textContent = 'Your request could not be sent. Check your connection and try again, or call or text (520) 000-0000.';
+        msg.hidden = false;
       })
       .finally(function () {
-        msg.hidden = false;
-        btn.disabled = false;
-        btn.textContent = 'Send booking request';
+        sending = false;
+        if (!form.classList.contains('is-locked')) {
+          btn.disabled = false;
+          btn.textContent = 'Send booking request';
+        }
       });
   });
 </script>
