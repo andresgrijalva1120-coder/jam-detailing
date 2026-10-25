@@ -92,7 +92,10 @@ header { background: linear-gradient(180deg, #000, #0b0b0c); color: var(--deep-i
 .service[data-service] { cursor: pointer; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
 .service[data-service]:hover { transform: translateY(-3px); border-color: var(--rasp); box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--rasp) 60%, transparent); }
 .service[data-service]:focus-visible { outline: 3px solid var(--rasp); outline-offset: 3px; }
-.service.is-picked { border-color: var(--rasp); box-shadow: 0 0 0 1px var(--rasp), 0 10px 30px -12px color-mix(in srgb, var(--rasp) 60%, transparent); }
+.service.is-picked, .service.is-picked:hover { border-color: var(--rasp); border-width: 2px; transform: none;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--rasp) 22%, var(--surface-2)), color-mix(in srgb, var(--rasp) 8%, var(--surface)));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--rasp) 45%, transparent), 0 14px 36px -12px color-mix(in srgb, var(--rasp) 70%, transparent); }
+.service.is-picked .pick { background: #fff; color: var(--rasp-deep); }
 .pick { justify-self: start; margin-top: 4px; padding: 10px 18px; border-radius: 999px; background: var(--rasp); color: #fff; font-weight: 600; font-size: 15px; }
 .service[data-service]:hover .pick { background: #f02a6c; }
 @keyframes flash { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--rasp) 55%, transparent); } }

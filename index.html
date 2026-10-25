@@ -258,10 +258,21 @@
     var select = document.getElementById('f-service');
     var cards = document.querySelectorAll('.service[data-service]');
     var smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Highlights the card that matches the chosen service and swaps its button text
+    function mark(value) {
+      cards.forEach(function (c) {
+        var on = c.dataset.service === value;
+        c.classList.toggle('is-picked', on);
+        c.setAttribute('aria-pressed', on ? 'true' : 'false');
+        var btn = c.querySelector('.pick');
+        if (btn) btn.innerHTML = on ? 'Selected <span aria-hidden="true">✓</span>' : 'Book this package <span aria-hidden="true">→</span>';
+      });
+    }
+    document.getElementById('booking-form').addEventListener('reset', function () { mark(null); });
     function pick(value) {
       select.value = value;
       if (window.jamUpdateQuote) window.jamUpdateQuote();
-      cards.forEach(function (c) { c.classList.toggle('is-picked', c.dataset.service === value); });
+      mark(value);
       document.getElementById('booking-form').scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
       select.classList.remove('flash'); void select.offsetWidth; select.classList.add('flash');
       setTimeout(function () { document.getElementById('f-name').focus({ preventScroll: true }); }, smooth ? 600 : 0);
@@ -275,7 +286,7 @@
     var both = document.querySelector('.pick-both');
     if (both) both.addEventListener('click', function (e) { e.preventDefault(); pick(both.dataset.service); });
     select.addEventListener('change', function () {
-      cards.forEach(function (c) { c.classList.toggle('is-picked', c.dataset.service === select.value); });
+      mark(select.value);
     });
   })();
 
