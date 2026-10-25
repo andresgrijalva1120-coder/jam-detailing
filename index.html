@@ -197,7 +197,19 @@
         </label>
       </div>
       <label for="f-address">Service address<input id="f-address" name="address" required autocomplete="street-address" placeholder="Street, city, ZIP"></label>
-      <label for="f-car">Vehicle<input id="f-car" name="vehicle" placeholder="Year, make, model"></label>
+      <div class="row">
+        <label for="f-car">Vehicle<input id="f-car" name="vehicle" placeholder="Year, make, model"></label>
+        <label for="f-size">Vehicle size
+          <select id="f-size" name="vehicle_size" required>
+            <option value="" disabled selected>Choose a size</option>
+            <option>Coupe/Sedan</option>
+            <option>Small SUV</option>
+            <option>Truck</option>
+            <option>Large SUV</option>
+            <option>MiniVan</option>
+          </select>
+        </label>
+      </div>
       <label for="f-notes">Anything we should know?<textarea id="f-notes" name="notes" placeholder="Pet hair, gate code, where to park..."></textarea></label>
       <button class="btn btn-sun" type="submit" id="f-submit">Send booking request</button>
       <p class="form-msg" id="form-msg" role="status" hidden></p>
