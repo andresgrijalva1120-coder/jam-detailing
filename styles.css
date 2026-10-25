@@ -210,3 +210,12 @@ select option { color: var(--ink); background: #0f0f10; }
   box-shadow: 0 10px 26px -8px color-mix(in srgb, var(--rasp) 80%, transparent); }
 .page-hero .jam-spell { font-size: 17px; }
 .jam-spell b { color: var(--rasp); font-weight: 800; }
+
+/* Line up each part of the team cards across the row (photo, name, role, bio, favorite jam),
+   so a longer bio doesn't push one card's lines out of step with the others. */
+.member { grid-template-rows: auto auto auto 1fr auto; }
+@supports (grid-template-rows: subgrid) {
+  .team { grid-auto-rows: auto; }
+  .member { grid-row: span 5; grid-template-rows: subgrid; row-gap: 14px; }
+}
+.member .bio { align-self: start; }
