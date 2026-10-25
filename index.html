@@ -176,8 +176,7 @@
         <label for="f-phone">Phone<input id="f-phone" name="phone" type="tel" required autocomplete="tel"></label>
       </div>
       <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email"></label>
-      <div class="row">
-        <label for="f-service">Service
+      <label for="f-service">Service
           <select id="f-service" name="service">
             <option>Raspberry Rinse (from $70)</option>
             <option>Sweet Jam Interior Refresh (from $80)</option>
@@ -188,10 +187,28 @@
             <option>Not sure yet, help me choose</option>
           </select>
         </label>
-        <label for="f-date">Preferred day<input id="f-date" name="date" type="date"></label>
+      <div class="row">
+        <label for="f-date">Preferred day<input id="f-date" name="date" type="date" required></label>
+        <label for="f-time">Preferred time
+          <select id="f-time" name="time" required>
+            <option value="" disabled selected>Choose a time</option>
+            <option>8:00 AM</option>
+            <option>9:00 AM</option>
+            <option>10:00 AM</option>
+            <option>11:00 AM</option>
+            <option>12:00 PM</option>
+            <option>1:00 PM</option>
+            <option>2:00 PM</option>
+            <option>3:00 PM</option>
+            <option>4:00 PM</option>
+            <option>5:00 PM</option>
+            <option>Flexible, any time works</option>
+          </select>
+        </label>
       </div>
+      <label for="f-address">Service address<input id="f-address" name="address" required autocomplete="street-address" placeholder="Street, city, ZIP"></label>
       <label for="f-car">Vehicle<input id="f-car" name="vehicle" placeholder="Year, make, model"></label>
-      <label for="f-notes">Anything we should know?<textarea id="f-notes" name="notes" placeholder="Pet hair, address area, gate code..."></textarea></label>
+      <label for="f-notes">Anything we should know?<textarea id="f-notes" name="notes" placeholder="Pet hair, gate code, where to park..."></textarea></label>
       <button class="btn btn-sun" type="submit" id="f-submit">Send booking request</button>
       <p class="form-msg" id="form-msg" role="status" hidden></p>
     </form>
@@ -229,6 +246,12 @@
     select.addEventListener('change', function () {
       cards.forEach(function (c) { c.classList.toggle('is-picked', c.dataset.service === select.value); });
     });
+  })();
+
+  // Don't allow booking a day in the past
+  (function () {
+    var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    document.getElementById('f-date').min = d.toISOString().slice(0, 10);
   })();
 
   // Sends the booking to Web3Forms without leaving the page, then shows a confirmation.

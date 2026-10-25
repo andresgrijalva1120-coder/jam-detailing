@@ -159,3 +159,7 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
 /* Keep the 4-link menu tidy on phones */
 .nav-links a { white-space: nowrap; }
 @media (max-width: 520px) { .nav-links { gap: 8px 16px; font-size: 14px; flex-wrap: wrap; } }
+
+/* Grey out "Choose a time" until a time is picked */
+select:invalid { color: #9a9aa0; }
+select option { color: var(--ink); background: #0f0f10; }
