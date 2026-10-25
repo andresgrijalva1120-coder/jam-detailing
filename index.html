@@ -3,153 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="JAM Detailing: mobile car detailing in Tucson, AZ. Six detailing packages from $50, from a quick exterior rinse to a full showroom finish. We come to you.">
+<meta name="description" content="JAM Detailing: mobile car detailing in Tucson, AZ. Six detailing packages from $70, from a quick exterior rinse to a full showroom finish. We come to you.">
 <title>JAM Detailing</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="assets/hero-car.webp">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap">
-<style>
-/* Layout: full-width bands, each with a centered 1080px inner column.
-   Theme: gradient-finished black like polished paint, raspberry red accents and borders, white text. */
-:root {
-  --bg: #050505;
-  --surface: #0f0f10;
-  --surface-2: #19191b;
-  --ink: #ffffff;
-  --muted: #e4e4e7;        /* secondary text, still reads as white */
-  --rasp: #e3175b;          /* raspberry red */
-  --rasp-deep: #a10e40;
-  --line: color-mix(in srgb, var(--rasp) 55%, transparent);
-  --deep-ink: #ffffff;
-  --sun: var(--rasp);       /* main accent (buttons, highlights) */
-  --sun-ink: #ffffff;
-  --accent: var(--rasp);
-  --font-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
-  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-  color-scheme: dark;
-}
-
-* { box-sizing: border-box; }
-
-body { margin: 0; color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6; min-height: 100vh;
-  background: linear-gradient(180deg, #000 0%, #121214 22%, #070708 45%, #161618 68%, #060606 88%, #000 100%); }
-h1, h2, h3 { font-family: var(--font-display); line-height: 1.05; margin: 0; text-wrap: balance; }
-p { margin: 0; }
-a { color: inherit; }
-.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.band { padding-block: 72px; }
-.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
-
-/* Header */
-header { background: linear-gradient(180deg, #000, #0b0b0c); color: var(--deep-ink); border-bottom: 1px solid var(--line); }
-.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; flex-wrap: wrap; }
-.logo { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -.01em; text-decoration: none; }
-.logo span { color: var(--sun); }
-.nav-links { display: flex; gap: 22px; font-size: 15px; font-weight: 500; }
-.nav-links a { text-decoration: none; opacity: .85; }
-.nav-links a:hover { opacity: 1; }
-
-/* Hero */
-.hero { color: var(--deep-ink); position: relative; overflow: hidden; min-height: min(86vh, 760px); display: grid; align-items: center;
-  background: #000 url("assets/hero-car.webp") 62% 55% / cover no-repeat; }
-/* Darkens the photo behind the headline so the white text stays readable */
-.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.72) 32%, rgba(0,0,0,.25) 62%, rgba(0,0,0,.05) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.35) 0%, transparent 22%, transparent 75%, #000 100%); }
-@media (max-width: 760px) {
-  .hero { background-position: 70% center; }
-  .hero::before { background: linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.5) 50%, rgba(0,0,0,.85) 100%); }
-}
-.hero h1, .hero p.lede { text-shadow: 0 2px 18px rgba(0,0,0,.6); }
-.hero .wrap { width: 100%; position: relative; z-index: 1; padding-block: 56px 84px; display: grid; gap: 28px; }
-.hero h1 { font-size: clamp(38px, 6.4vw, 74px); font-weight: 800; letter-spacing: -.025em; max-width: 15ch; }
-.hero h1 em { font-style: normal; color: var(--sun); }
-.hero p.lede { font-size: 19px; max-width: 46ch; opacity: .9; }
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 999px;
-  font-weight: 600; font-size: 16px; text-decoration: none; border: 2px solid transparent; cursor: pointer; font-family: inherit; }
-.btn-sun { background: var(--sun); color: var(--sun-ink); }
-.btn-sun:hover { background: #f02a6c; }
-.btn-ghost { border-color: var(--rasp); color: var(--deep-ink); background: transparent; }
-.btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
-.hero-facts { display: flex; gap: 28px; flex-wrap: wrap; font-size: 15px; padding-top: 8px; text-shadow: 0 1px 10px rgba(0,0,0,.9); }
-.hero-facts span { border-left: 3px solid var(--rasp); padding-left: 10px; }
-.hero-facts b { color: #fff; font-weight: 700; }
-
-/* Services */
-.section-head { display: grid; gap: 10px; margin-bottom: 36px; max-width: 60ch; }
-.section-head h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -.02em; }
-.section-head p { color: var(--muted); }
-.services { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.service { background: linear-gradient(160deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: grid; gap: 14px; grid-template-rows: auto auto auto 1fr auto auto; }
-.service h3 { font-size: 24px; font-weight: 800; }
-.price { font-family: var(--font-display); font-weight: 600; font-size: 34px; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 8px; }
-.price small.from { order: -1; margin-left: 0; }
-.price-quote { font-size: 24px; color: var(--rasp); }
-.service-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.tier { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--rasp); }
-.badge { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--rasp) 20%, transparent); border: 1px solid var(--rasp); color: #fff; white-space: nowrap; }
-.service.is-signature { border-width: 2px; border-color: color-mix(in srgb, var(--rasp) 80%, transparent); }
-.tagline { font-style: italic; color: #fff; opacity: .9; border-top: 1px solid var(--line); padding-top: 14px; }
-.service .pick { align-self: end; }
-.price small { font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--muted); margin-left: 6px; }
-.service ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; align-content: start; color: var(--muted); }
-.service li { padding-left: 22px; position: relative; }
-.service li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 10px; border-radius: 50%; background: var(--sun); }
-.price-note { margin-top: 20px; font-size: 14px; color: var(--muted); }
-.price-note a { color: var(--rasp); font-weight: 600; }
-/* Service cards act as buttons: clicking one picks it in the booking form */
-.service[data-service] { cursor: pointer; transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease; }
-.service[data-service]:hover { transform: translateY(-3px); border-color: var(--rasp); box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--rasp) 60%, transparent); }
-.service[data-service]:focus-visible { outline: 3px solid var(--rasp); outline-offset: 3px; }
-.service.is-picked { border-color: var(--rasp); box-shadow: 0 0 0 1px var(--rasp), 0 10px 30px -12px color-mix(in srgb, var(--rasp) 60%, transparent); }
-.pick { justify-self: start; margin-top: 4px; padding: 10px 18px; border-radius: 999px; background: var(--rasp); color: #fff; font-weight: 600; font-size: 15px; }
-.service[data-service]:hover .pick { background: #f02a6c; }
-@keyframes flash { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 30% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--rasp) 55%, transparent); } }
-.flash { animation: flash 1.4s ease 1; border-color: var(--rasp); }
-
-/* How it works */
-.how { background: linear-gradient(180deg, #141416, #050505); border-block: 1px solid var(--line); }
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; list-style: none; padding: 0; margin: 0; counter-reset: step; }
-.steps li { counter-increment: step; display: grid; gap: 8px; }
-.steps li::before { content: counter(step); font-family: var(--font-display); font-weight: 800; font-size: 20px; width: 42px; height: 42px;
-  border-radius: 50%; display: grid; place-items: center; background: #000; color: var(--rasp); border: 2px solid var(--rasp); }
-.steps h3 { font-size: 20px; font-weight: 600; }
-.steps p { color: var(--muted); }
-
-/* Book */
-.book-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 40px; align-items: start; }
-@media (max-width: 760px) { .book-grid { grid-template-columns: 1fr; } }
-.contact-list { display: grid; gap: 14px; margin-top: 24px; }
-.contact { display: grid; gap: 2px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(160deg, var(--surface-2), var(--surface)); }
-.contact span { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--rasp); font-weight: 600; }
-.contact strong { font-size: 19px; font-weight: 600; user-select: all; word-break: break-word; }
-#booking-form { scroll-margin-top: 24px; }
-form { background: linear-gradient(160deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); border-radius: 18px; padding: 28px; display: grid; gap: 16px; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
-label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
-input, select, textarea { font: inherit; font-weight: 400; font-size: 16px; color: var(--ink); background: #050505; border: 1px solid var(--line);
-  border-radius: 10px; padding: 12px 14px; width: 100%; }
-textarea { min-height: 96px; resize: vertical; }
-input::placeholder, textarea::placeholder { color: #9a9aa0; }
-.form-msg { font-size: 15px; padding: 14px 16px; border-radius: 10px; background: color-mix(in srgb, var(--sun) 22%, var(--surface)); }
-
-footer { background: linear-gradient(180deg, #0b0b0c, #000); color: var(--deep-ink); border-top: 1px solid var(--line); }
-footer .wrap { padding-block: 32px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; opacity: .85; }
-
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header>
   <div class="wrap nav">
-    <a class="logo" href="#top">JAM<span>.</span> Detailing</a>
+    <a class="logo" href="index.html">JAM<span>.</span> Detailing</a>
     <nav class="nav-links" aria-label="Main">
       <a href="#services">Services</a>
       <a href="#how">How it works</a>
+      <a href="team.html">Meet the team</a>
       <a href="#book">Book</a>
     </nav>
   </div>
@@ -166,8 +35,8 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
     </div>
     <div class="hero-facts">
       <span><b>We come to you</b> · home or office</span>
-      <span><b>Exterior from $50</b></span>
-      <span><b>Interior from $60</b></span>
+      <span><b>Exterior from $70</b></span>
+      <span><b>Interior from $80</b></span>
     </div>
   </div>
 </section>
@@ -180,10 +49,10 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
       <p>Six packages, from a quick rinse to a showroom finish. Prices are starting points and depend on vehicle size and condition. You'll get a firm quote before any work starts.</p>
     </div>
     <div class="services">
-      <article class="service is-signature" data-service="Raspberry Rinse (from $50)" role="button" tabindex="0" aria-label="Book Raspberry Rinse">
+      <article class="service is-signature" data-service="Raspberry Rinse (from $70)" role="button" tabindex="0" aria-label="Book Raspberry Rinse">
         <div class="service-top"><p class="tier">Basic Exterior</p><span class="badge">Signature</span></div>
         <h3>Raspberry Rinse</h3>
-        <p class="price"><small class="from">Starting at</small>$50</p>
+        <p class="price"><small class="from">Starting at</small>$70</p>
         <ul>
           <li>Foam wash</li>
           <li>Hand dry</li>
@@ -194,10 +63,10 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
         <p class="tagline">&ldquo;A fresh spread of shine for your ride.&rdquo;</p>
         <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
-      <article class="service is-signature" data-service="Sweet Jam Interior Refresh (from $60)" role="button" tabindex="0" aria-label="Book Sweet Jam Interior Refresh">
+      <article class="service is-signature" data-service="Sweet Jam Interior Refresh (from $80)" role="button" tabindex="0" aria-label="Book Sweet Jam Interior Refresh">
         <div class="service-top"><p class="tier">Basic Interior</p><span class="badge">Signature</span></div>
         <h3>Sweet Jam Interior Refresh</h3>
-        <p class="price"><small class="from">Starting at</small>$60</p>
+        <p class="price"><small class="from">Starting at</small>$80</p>
         <ul>
           <li>Vacuum</li>
           <li>Dash wipe-down</li>
@@ -207,10 +76,10 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
         <p class="tagline">&ldquo;Clean, fresh, and clutter-free.&rdquo;</p>
         <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
-      <article class="service" data-service="Berry Clean Deluxe (from $85)" role="button" tabindex="0" aria-label="Book Berry Clean Deluxe">
+      <article class="service" data-service="Berry Clean Deluxe (from $105)" role="button" tabindex="0" aria-label="Book Berry Clean Deluxe">
         <div class="service-top"><p class="tier">Enhanced Interior</p></div>
         <h3>Berry Clean Deluxe</h3>
-        <p class="price"><small class="from">Starting at</small>$85</p>
+        <p class="price"><small class="from">Starting at</small>$105</p>
         <ul>
           <li>Everything in Sweet Jam Interior Refresh</li>
           <li>Carpet extraction</li>
@@ -234,10 +103,10 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
         <p class="tagline">&ldquo;Glossy enough to look freshly spread.&rdquo;</p>
         <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
-      <article class="service is-signature" data-service="The Full Jar Detail (from $120)" role="button" tabindex="0" aria-label="Book The Full Jar Detail">
+      <article class="service is-signature" data-service="The Full Jar Detail (from $140)" role="button" tabindex="0" aria-label="Book The Full Jar Detail">
         <div class="service-top"><p class="tier">Complete Interior + Exterior</p><span class="badge">Signature</span></div>
         <h3>The Full Jar Detail</h3>
-        <p class="price"><small class="from">Starting at</small>$120</p>
+        <p class="price"><small class="from">Starting at</small>$140</p>
         <ul>
           <li>Full wash</li>
           <li>Deep carpet extraction</li>
@@ -249,10 +118,10 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
         <p class="tagline">&ldquo;The whole jar. The whole shine.&rdquo;</p>
         <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
-      <article class="service is-signature" data-service="The Grand Slam Jam (from $150)" role="button" tabindex="0" aria-label="Book The Grand Slam Jam">
+      <article class="service is-signature" data-service="The Grand Slam Jam (from $170)" role="button" tabindex="0" aria-label="Book The Grand Slam Jam">
         <div class="service-top"><p class="tier">Highest Tier</p><span class="badge">Signature</span></div>
         <h3>The Grand Slam Jam</h3>
-        <p class="price"><small class="from">Starting at</small>$150</p>
+        <p class="price"><small class="from">Starting at</small>$170</p>
         <ul>
           <li>Complete interior detail</li>
           <li>Complete exterior detail</li>
@@ -310,12 +179,12 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
       <div class="row">
         <label for="f-service">Service
           <select id="f-service" name="service">
-            <option>Raspberry Rinse (from $50)</option>
-            <option>Sweet Jam Interior Refresh (from $60)</option>
-            <option>Berry Clean Deluxe (from $85)</option>
+            <option>Raspberry Rinse (from $70)</option>
+            <option>Sweet Jam Interior Refresh (from $80)</option>
+            <option>Berry Clean Deluxe (from $105)</option>
             <option>Strawberry Shine Exterior Detail (quote)</option>
-            <option>The Full Jar Detail (from $120)</option>
-            <option>The Grand Slam Jam (from $150)</option>
+            <option>The Full Jar Detail (from $140)</option>
+            <option>The Grand Slam Jam (from $170)</option>
             <option>Not sure yet, help me choose</option>
           </select>
         </label>
