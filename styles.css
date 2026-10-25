@@ -200,3 +200,13 @@ select option { color: var(--ink); background: #0f0f10; }
 .sub-areas { list-style: none; margin: 6px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: grid; gap: 2px; }
 .sub-areas li { position: relative; padding-left: 14px; font-size: 15px; color: var(--muted); }
 .sub-areas li::before { content: ""; position: absolute; left: 0; top: .7em; width: 6px; height: 6px; border-radius: 50%; background: var(--rasp); }
+
+/* JAM initials on the team cards */
+.team { margin-top: 34px; row-gap: 52px; }
+.member { position: relative; padding-top: 52px; }
+.jam-letter { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); width: 68px; height: 68px; border-radius: 18px;
+  display: grid; place-items: center; font-family: var(--font-display); font-size: 42px; font-weight: 800; line-height: 1; color: #fff;
+  background: linear-gradient(150deg, var(--rasp), var(--rasp-deep)); border: 2px solid #000;
+  box-shadow: 0 10px 26px -8px color-mix(in srgb, var(--rasp) 80%, transparent); }
+.page-hero .jam-spell { font-size: 17px; }
+.jam-spell b { color: var(--rasp); font-weight: 800; }
