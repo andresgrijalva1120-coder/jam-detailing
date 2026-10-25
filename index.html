@@ -209,10 +209,13 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
       </div>
     </div>
 
-    <form action="https://formsubmit.co/jamdetailingaz@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="New booking request - JAM Detailing">
-      <input type="hidden" name="_template" value="table">
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    <form id="booking-form" action="https://api.web3forms.com/submit" method="POST">
+      <!-- Paste the access key Web3Forms emails you between the quotes below -->
+      <input type="hidden" name="access_key" value="fdd90a14-6613-4c3e-94c9-8420f6a2cc3d">
+      <input type="hidden" name="subject" value="New booking request - JAM Detailing">
+      <input type="hidden" name="from_name" value="JAM Detailing Website">
+      <input type="hidden" name="redirect" value="https://web3forms.com/success">
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
       <div class="row">
         <label for="f-name">Name<input id="f-name" name="name" required autocomplete="name"></label>
         <label for="f-phone">Phone<input id="f-phone" name="phone" type="tel" required autocomplete="tel"></label>
@@ -230,7 +233,8 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
       </div>
       <label for="f-car">Vehicle<input id="f-car" name="vehicle" placeholder="Year, make, model"></label>
       <label for="f-notes">Anything we should know?<textarea id="f-notes" name="notes" placeholder="Pet hair, address area, gate code..."></textarea></label>
-      <button class="btn btn-sun" type="submit">Send booking request</button>
+      <button class="btn btn-sun" type="submit" id="f-submit">Send booking request</button>
+      <p class="form-msg" id="form-msg" role="status" hidden></p>
     </form>
   </div>
 </section>
@@ -241,5 +245,42 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
     <span>(520) 000-0000 · jamdetailingaz@gmail.com</span>
   </div>
 </footer>
+
+<script>
+  // Sends the booking to Web3Forms without leaving the page, then shows a confirmation.
+  var form = document.getElementById('booking-form');
+  var msg = document.getElementById('form-msg');
+  var btn = document.getElementById('f-submit');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    var data = new FormData(form);
+    data.delete('redirect');
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: data
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        if (json.success) {
+          msg.textContent = "Thanks! Your booking request was sent. We'll reach out soon to confirm your time.";
+          form.reset();
+        } else {
+          msg.textContent = 'Something went wrong sending your request. Please call or text (520) 000-0000 instead.';
+        }
+      })
+      .catch(function () {
+        msg.textContent = 'Your request could not be sent. Check your connection, or call or text (520) 000-0000.';
+      })
+      .finally(function () {
+        msg.hidden = false;
+        btn.disabled = false;
+        btn.textContent = 'Send booking request';
+      });
+  });
+</script>
 </body>
 </html>
