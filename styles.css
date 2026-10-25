@@ -163,3 +163,5 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
 /* Grey out "Choose a time" until a time is picked */
 select:invalid { color: #9a9aa0; }
 select option { color: var(--ink); background: #0f0f10; }
+
+.photo-slot .initials { font-family: var(--font-display); font-size: 44px; font-weight: 800; letter-spacing: 0; color: var(--rasp); text-transform: none; }
