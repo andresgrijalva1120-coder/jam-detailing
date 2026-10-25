@@ -179,12 +179,12 @@
       <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email"></label>
       <label for="f-service">Service
           <select id="f-service" name="service">
-            <option>Raspberry Rinse (from $70)</option>
-            <option>Sweet Jam Interior Refresh (from $80)</option>
-            <option>Berry Clean Deluxe (from $105)</option>
+            <option data-price="70">Raspberry Rinse (from $70)</option>
+            <option data-price="80">Sweet Jam Interior Refresh (from $80)</option>
+            <option data-price="105">Berry Clean Deluxe (from $105)</option>
             <option>Strawberry Shine Exterior Detail (quote)</option>
-            <option>The Full Jar Detail (from $140)</option>
-            <option>The Grand Slam Jam (from $170)</option>
+            <option data-price="140">The Full Jar Detail (from $140)</option>
+            <option data-price="170">The Grand Slam Jam (from $170)</option>
             <option>Not sure yet, help me choose</option>
           </select>
         </label>
@@ -210,7 +210,21 @@
           </select>
         </label>
       </div>
+      <fieldset class="addons">
+        <legend>Add-ons <span class="opt">(optional)</span></legend>
+        <label class="addon" id="addon-bed-wrap"><input type="checkbox" class="addon-box" value="Truck Bed Wash" data-price="35" id="addon-bed">
+          <span class="addon-name">Truck Bed Wash<small id="addon-bed-note">Trucks only</small></span><span class="addon-price">+$35</span></label>
+        <label class="addon"><input type="checkbox" class="addon-box" value="Air Freshener" data-price="10">
+          <span class="addon-name">Air Freshener</span><span class="addon-price">+$10</span></label>
+        <input type="hidden" name="add_ons" id="f-addons" value="None">
+      </fieldset>
       <label for="f-notes">Anything we should know?<textarea id="f-notes" name="notes" placeholder="Pet hair, gate code, where to park..."></textarea></label>
+      <div class="quote" id="quote" aria-live="polite">
+        <div class="quote-lines" id="quote-lines"></div>
+        <div class="quote-total"><span>Estimated total</span><strong id="quote-total">Choose a package</strong></div>
+        <p class="quote-note" id="quote-note">Starting prices. We'll confirm your final price after seeing your vehicle's size and condition.</p>
+        <input type="hidden" name="estimated_total" id="f-total" value="">
+      </div>
       <button class="btn btn-sun" type="submit" id="f-submit">Send booking request</button>
       <p class="form-msg" id="form-msg" role="status" hidden></p>
     </form>
@@ -232,6 +246,7 @@
     var smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function pick(value) {
       select.value = value;
+      if (window.jamUpdateQuote) window.jamUpdateQuote();
       cards.forEach(function (c) { c.classList.toggle('is-picked', c.dataset.service === value); });
       document.getElementById('booking-form').scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
       select.classList.remove('flash'); void select.offsetWidth; select.classList.add('flash');
@@ -283,6 +298,54 @@
     date.addEventListener('change', fill);
     date.addEventListener('input', fill);
     document.getElementById('booking-form').addEventListener('reset', function () { setTimeout(fill, 0); });
+  })();
+
+  // Add-ons and live price quote
+  (function () {
+    var service = document.getElementById('f-service');
+    var size = document.getElementById('f-size');
+    var boxes = document.querySelectorAll('.addon-box');
+    var bed = document.getElementById('addon-bed');
+    var lines = document.getElementById('quote-lines');
+    var total = document.getElementById('quote-total');
+    var note = document.getElementById('quote-note');
+    var addonsField = document.getElementById('f-addons');
+    var totalField = document.getElementById('f-total');
+    function money(n) { return '$' + n; }
+    function row(name, amt) { return '<div class="quote-line"><span>' + name + '</span><span>' + amt + '</span></div>'; }
+    function update() {
+      // Truck Bed Wash only applies to trucks
+      var isTruck = size.value === 'Truck';
+      bed.disabled = !isTruck;
+      if (!isTruck) bed.checked = false;
+      document.getElementById('addon-bed-wrap').classList.toggle('is-off', !isTruck);
+
+      var opt = service.options[service.selectedIndex];
+      var pkgName = opt.text.replace(/\s*\(.*\)\s*$/, '');
+      var base = opt.dataset.price ? Number(opt.dataset.price) : null;
+      var html = row(pkgName, base === null ? 'Quote' : money(base));
+      var extras = 0, picked = [];
+      boxes.forEach(function (b) {
+        if (b.checked) { extras += Number(b.dataset.price); picked.push(b.value); html += row(b.value, '+' + money(b.dataset.price)); }
+      });
+      lines.innerHTML = html;
+      addonsField.value = picked.length ? picked.join(', ') : 'None';
+      if (base === null) {
+        total.textContent = extras ? money(extras) + ' + package quote' : 'Quoted after we see your car';
+        totalField.value = total.textContent;
+        note.textContent = "We'll quote this package after seeing your vehicle. Add-on prices are listed above.";
+      } else {
+        total.textContent = 'From ' + money(base + extras);
+        totalField.value = total.textContent;
+        note.textContent = "Starting prices. We'll confirm your final price after seeing your vehicle's size and condition.";
+      }
+    }
+    service.addEventListener('change', update);
+    size.addEventListener('change', update);
+    boxes.forEach(function (b) { b.addEventListener('change', update); });
+    document.getElementById('booking-form').addEventListener('reset', function () { setTimeout(update, 0); });
+    window.jamUpdateQuote = update;
+    update();
   })();
 
   // Sends the booking to Web3Forms without leaving the page, then shows a confirmation.
