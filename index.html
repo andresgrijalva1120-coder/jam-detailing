@@ -161,6 +161,7 @@
         <div class="contact"><span>Call or text</span><strong>(520) 000-0000</strong></div>
         <div class="contact"><span>Email</span><strong>jamdetailingaz@gmail.com</strong></div>
         <div class="contact"><span>Service area</span><strong>Tucson & surrounding areas</strong></div>
+        <div class="contact"><span>Hours</span><strong>Mon–Fri: 4 PM – 8 PM<br>Sat–Sun: 9 AM – 6 PM</strong></div>
       </div>
     </div>
 
@@ -190,19 +191,8 @@
       <div class="row">
         <label for="f-date">Preferred day<input id="f-date" name="date" type="date" required></label>
         <label for="f-time">Preferred time
-          <select id="f-time" name="time" required>
-            <option value="" disabled selected>Choose a time</option>
-            <option>8:00 AM</option>
-            <option>9:00 AM</option>
-            <option>10:00 AM</option>
-            <option>11:00 AM</option>
-            <option>12:00 PM</option>
-            <option>1:00 PM</option>
-            <option>2:00 PM</option>
-            <option>3:00 PM</option>
-            <option>4:00 PM</option>
-            <option>5:00 PM</option>
-            <option>Flexible, any time works</option>
+          <select id="f-time" name="time" required disabled>
+            <option value="" disabled selected>Pick a day first</option>
           </select>
         </label>
       </div>
@@ -252,6 +242,35 @@
   (function () {
     var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     document.getElementById('f-date').min = d.toISOString().slice(0, 10);
+  })();
+
+  // Time slots follow the work hours for the chosen day.
+  // Weekdays 4 PM to 8 PM, weekends 9 AM to 6 PM (start times end an hour before closing).
+  (function () {
+    var HOURS = { weekday: [16, 19], weekend: [9, 17] };   // first and last start hour, 24h clock
+    var date = document.getElementById('f-date');
+    var time = document.getElementById('f-time');
+    function label(h) { return (h % 12 || 12) + ':00 ' + (h < 12 ? 'AM' : 'PM'); }
+    function fill() {
+      var prev = time.value;
+      time.innerHTML = '';
+      if (!date.value) {
+        time.disabled = true;
+        time.add(new Option('Pick a day first', '', true, true)); time.options[0].disabled = true;
+        return;
+      }
+      var parts = date.value.split('-');
+      var day = new Date(parts[0], parts[1] - 1, parts[2]).getDay();
+      var range = (day === 0 || day === 6) ? HOURS.weekend : HOURS.weekday;
+      time.disabled = false;
+      time.add(new Option('Choose a time', '', true, true)); time.options[0].disabled = true;
+      for (var h = range[0]; h <= range[1]; h++) time.add(new Option(label(h)));
+      time.add(new Option('Flexible, any time works'));
+      for (var i = 0; i < time.options.length; i++) if (time.options[i].value === prev && prev) time.selectedIndex = i;
+    }
+    date.addEventListener('change', fill);
+    date.addEventListener('input', fill);
+    document.getElementById('booking-form').addEventListener('reset', function () { setTimeout(fill, 0); });
   })();
 
   // Sends the booking to Web3Forms without leaving the page, then shows a confirmation.
