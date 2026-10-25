@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="JAM Detailing: mobile car detailing in Tucson, AZ. Exterior details from $125, interior details from $100. We come to you.">
+<meta name="description" content="JAM Detailing: mobile car detailing in Tucson, AZ. Six detailing packages from $50, from a quick exterior rinse to a full showroom finish. We come to you.">
 <title>JAM Detailing</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +64,7 @@ header { background: linear-gradient(180deg, #000, #0b0b0c); color: var(--deep-i
 }
 .hero h1, .hero p.lede { text-shadow: 0 2px 18px rgba(0,0,0,.6); }
 .hero .wrap { width: 100%; position: relative; z-index: 1; padding-block: 56px 84px; display: grid; gap: 28px; }
-.hero h1 { font-size: clamp(44px, 8vw, 88px); font-weight: 800; letter-spacing: -.025em; max-width: 13ch; }
+.hero h1 { font-size: clamp(38px, 6.4vw, 74px); font-weight: 800; letter-spacing: -.025em; max-width: 15ch; }
 .hero h1 em { font-style: normal; color: var(--sun); }
 .hero p.lede { font-size: 19px; max-width: 46ch; opacity: .9; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -82,12 +82,20 @@ header { background: linear-gradient(180deg, #000, #0b0b0c); color: var(--deep-i
 .section-head { display: grid; gap: 10px; margin-bottom: 36px; max-width: 60ch; }
 .section-head h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -.02em; }
 .section-head p { color: var(--muted); }
-.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-.service { background: linear-gradient(160deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); border-radius: 18px; padding: 28px; display: grid; gap: 16px; align-content: start; }
-.service h3 { font-size: 26px; font-weight: 800; }
-.price { font-family: var(--font-display); font-weight: 600; font-size: 34px; font-variant-numeric: tabular-nums; }
+.services { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.service { background: linear-gradient(160deg, var(--surface-2), var(--surface)); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: grid; gap: 14px; grid-template-rows: auto auto auto 1fr auto auto; }
+.service h3 { font-size: 24px; font-weight: 800; }
+.price { font-family: var(--font-display); font-weight: 600; font-size: 34px; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 8px; }
+.price small.from { order: -1; margin-left: 0; }
+.price-quote { font-size: 24px; color: var(--rasp); }
+.service-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tier { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--rasp); }
+.badge { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, var(--rasp) 20%, transparent); border: 1px solid var(--rasp); color: #fff; white-space: nowrap; }
+.service.is-signature { border-width: 2px; border-color: color-mix(in srgb, var(--rasp) 80%, transparent); }
+.tagline { font-style: italic; color: #fff; opacity: .9; border-top: 1px solid var(--line); padding-top: 14px; }
+.service .pick { align-self: end; }
 .price small { font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--muted); margin-left: 6px; }
-.service ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; color: var(--muted); }
+.service ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; align-content: start; color: var(--muted); }
 .service li { padding-left: 22px; position: relative; }
 .service li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 10px; border-radius: 50%; background: var(--sun); }
 .price-note { margin-top: 20px; font-size: 14px; color: var(--muted); }
@@ -150,7 +158,7 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
 <section class="hero" id="top">
   <div class="wrap">
     <p class="eyebrow" style="color: #fff; text-shadow: 0 1px 10px rgba(0,0,0,.9)">Mobile car detailing · Tucson, AZ</p>
-    <h1>Desert dust out. <em>Shine</em> back in.</h1>
+    <h1>Spreading <em>Shine</em> Across Arizona, One Vehicle at a Time.</h1>
     <p class="lede">JAM Detailing comes to your home or work anywhere in Tucson. You keep your day, we bring the water, the tools, and the elbow grease.</p>
     <div class="hero-actions">
       <a class="btn btn-sun" href="#book">Book a detail</a>
@@ -158,8 +166,8 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
     </div>
     <div class="hero-facts">
       <span><b>We come to you</b> · home or office</span>
-      <span><b>Interior from $100</b></span>
-      <span><b>Exterior from $125</b></span>
+      <span><b>Exterior from $50</b></span>
+      <span><b>Interior from $60</b></span>
     </div>
   </div>
 </section>
@@ -168,36 +176,95 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">Services</p>
-      <h2>Two services, done right.</h2>
-      <p>Final price depends on vehicle size and condition. You'll get a firm quote before any work starts.</p>
+      <h2>Pick your jar of shine.</h2>
+      <p>Six packages, from a quick rinse to a showroom finish. Prices are starting points and depend on vehicle size and condition. You'll get a firm quote before any work starts.</p>
     </div>
     <div class="services">
-      <article class="service" data-service="Exterior Detail ($125–$180)" role="button" tabindex="0" aria-label="Book an Exterior Detail">
-        <h3>Exterior Detail</h3>
-        <p class="price">$125–$180<small>per vehicle</small></p>
+      <article class="service is-signature" data-service="Raspberry Rinse (from $50)" role="button" tabindex="0" aria-label="Book Raspberry Rinse">
+        <div class="service-top"><p class="tier">Basic Exterior</p><span class="badge">Signature</span></div>
+        <h3>Raspberry Rinse</h3>
+        <p class="price"><small class="from">Starting at</small>$50</p>
         <ul>
-          <li>Hand wash and dry</li>
-          <li>Wheels, tires, and wheel wells cleaned</li>
-          <li>Bug and road grime removal</li>
-          <li>Windows and mirrors streak-free</li>
+          <li>Foam wash</li>
+          <li>Hand dry</li>
+          <li>Wheel cleaning</li>
           <li>Tire shine</li>
+          <li>Exterior windows</li>
         </ul>
-        <span class="pick">Book this detail <span aria-hidden="true">→</span></span>
+        <p class="tagline">&ldquo;A fresh spread of shine for your ride.&rdquo;</p>
+        <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
-      <article class="service" data-service="Interior Detail ($100–$120)" role="button" tabindex="0" aria-label="Book an Interior Detail">
-        <h3>Interior Detail</h3>
-        <p class="price">$100–$120<small>per vehicle</small></p>
+      <article class="service is-signature" data-service="Sweet Jam Interior Refresh (from $60)" role="button" tabindex="0" aria-label="Book Sweet Jam Interior Refresh">
+        <div class="service-top"><p class="tier">Basic Interior</p><span class="badge">Signature</span></div>
+        <h3>Sweet Jam Interior Refresh</h3>
+        <p class="price"><small class="from">Starting at</small>$60</p>
         <ul>
-          <li>Full vacuum, seats, carpets, and trunk</li>
-          <li>Dashboard, console, and door panels wiped down</li>
-          <li>Cupholders and vents cleaned</li>
-          <li>Interior glass</li>
-          <li>Floor mats cleaned</li>
+          <li>Vacuum</li>
+          <li>Dash wipe-down</li>
+          <li>Interior glass cleaning</li>
+          <li>Door panel cleaning</li>
         </ul>
-        <span class="pick">Book this detail <span aria-hidden="true">→</span></span>
+        <p class="tagline">&ldquo;Clean, fresh, and clutter-free.&rdquo;</p>
+        <span class="pick">Book this package <span aria-hidden="true">→</span></span>
+      </article>
+      <article class="service" data-service="Berry Clean Deluxe (from $85)" role="button" tabindex="0" aria-label="Book Berry Clean Deluxe">
+        <div class="service-top"><p class="tier">Enhanced Interior</p></div>
+        <h3>Berry Clean Deluxe</h3>
+        <p class="price"><small class="from">Starting at</small>$85</p>
+        <ul>
+          <li>Everything in Sweet Jam Interior Refresh</li>
+          <li>Carpet extraction</li>
+          <li>Deep surface cleaning</li>
+          <li>Leather treatment</li>
+        </ul>
+        <p class="tagline">&ldquo;Stains don&#x27;t belong in the recipe.&rdquo;</p>
+        <span class="pick">Book this package <span aria-hidden="true">→</span></span>
+      </article>
+      <article class="service" data-service="Strawberry Shine Exterior Detail (quote)" role="button" tabindex="0" aria-label="Book Strawberry Shine Exterior Detail">
+        <div class="service-top"><p class="tier">Premium Exterior</p></div>
+        <h3>Strawberry Shine Exterior Detail</h3>
+        <p class="price price-quote">Ask for a quote</p>
+        <ul>
+          <li>Foam wash</li>
+          <li>Deep wheel cleaning</li>
+          <li>Tire shine</li>
+          <li>Trim cleaning</li>
+          <li>Bug removal</li>
+        </ul>
+        <p class="tagline">&ldquo;Glossy enough to look freshly spread.&rdquo;</p>
+        <span class="pick">Book this package <span aria-hidden="true">→</span></span>
+      </article>
+      <article class="service is-signature" data-service="The Full Jar Detail (from $120)" role="button" tabindex="0" aria-label="Book The Full Jar Detail">
+        <div class="service-top"><p class="tier">Complete Interior + Exterior</p><span class="badge">Signature</span></div>
+        <h3>The Full Jar Detail</h3>
+        <p class="price"><small class="from">Starting at</small>$120</p>
+        <ul>
+          <li>Full wash</li>
+          <li>Deep carpet extraction</li>
+          <li>Glass treatment</li>
+          <li>Wheel cleaning</li>
+          <li>Tire shine</li>
+          <li>Dashboard protection</li>
+        </ul>
+        <p class="tagline">&ldquo;The whole jar. The whole shine.&rdquo;</p>
+        <span class="pick">Book this package <span aria-hidden="true">→</span></span>
+      </article>
+      <article class="service is-signature" data-service="The Grand Slam Jam (from $150)" role="button" tabindex="0" aria-label="Book The Grand Slam Jam">
+        <div class="service-top"><p class="tier">Highest Tier</p><span class="badge">Signature</span></div>
+        <h3>The Grand Slam Jam</h3>
+        <p class="price"><small class="from">Starting at</small>$150</p>
+        <ul>
+          <li>Complete interior detail</li>
+          <li>Complete exterior detail</li>
+          <li>Extra attention to stains</li>
+          <li>Heavy dirt removal</li>
+          <li>Showroom finish</li>
+        </ul>
+        <p class="tagline">&ldquo;Every inch covered with premium care.&rdquo;</p>
+        <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
     </div>
-    <p class="price-note">Want both? <a href="#book" class="pick-both" data-service="Both, inside and out">Book an inside-and-out detail</a> and we'll quote the combined price.</p>
+    <p class="price-note">Not sure which one fits? Pick the closest package and tell us about your car in the form. We'll recommend the right one.</p>
   </div>
 </section>
 
@@ -243,9 +310,13 @@ footer .wrap { padding-block: 32px; display: flex; justify-content: space-betwee
       <div class="row">
         <label for="f-service">Service
           <select id="f-service" name="service">
-            <option>Exterior Detail ($125–$180)</option>
-            <option>Interior Detail ($100–$120)</option>
-            <option>Both, inside and out</option>
+            <option>Raspberry Rinse (from $50)</option>
+            <option>Sweet Jam Interior Refresh (from $60)</option>
+            <option>Berry Clean Deluxe (from $85)</option>
+            <option>Strawberry Shine Exterior Detail (quote)</option>
+            <option>The Full Jar Detail (from $120)</option>
+            <option>The Grand Slam Jam (from $150)</option>
+            <option>Not sure yet, help me choose</option>
           </select>
         </label>
         <label for="f-date">Preferred day<input id="f-date" name="date" type="date"></label>
