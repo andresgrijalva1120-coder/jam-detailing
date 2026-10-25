@@ -229,3 +229,15 @@ form.is-locked > *:not(.form-done) { display: none; }
 .form-done h3 { font-size: 26px; font-weight: 800; }
 .form-done p { color: var(--muted); max-width: 40ch; }
 .form-done .form-done-small { font-size: 14px; color: #9a9aa0; }
+
+/* Keep every form field inside the form on phones. iPhone Safari gives date fields a built-in
+   minimum width and its own height, which pushed the "Preferred day" box past the edge. */
+.row > label, form label { min-width: 0; }
+input, select, textarea { min-width: 0; max-width: 100%; }
+input:not([type="checkbox"]), select { height: 48px; }
+input[type="date"] { display: block; line-height: normal; text-align: left; }
+input[type="date"]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+input[type="date"]::-webkit-calendar-picker-indicator { opacity: .8; cursor: pointer; }
+@supports (-webkit-touch-callout: none) {   /* iPhone / iPad only */
+  input[type="date"] { -webkit-appearance: none; appearance: none; }
+}
