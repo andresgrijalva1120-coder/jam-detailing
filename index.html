@@ -381,12 +381,12 @@
 
   // Sends the booking to Web3Forms without leaving the page, then locks the form.
   // One request per visitor: after a successful send the form is replaced with a confirmation,
-  // and this browser can't send another one for 24 hours (so impatient re-clicks don't flood the inbox).
+  // and this browser can't send another one for 4 hours (so impatient re-clicks don't flood the inbox).
   var form = document.getElementById('booking-form');
   var msg = document.getElementById('form-msg');
   var btn = document.getElementById('f-submit');
   var LOCK_KEY = 'jam-booking-sent';
-  var LOCK_HOURS = 24;
+  var LOCK_HOURS = 4;
   var sending = false;
 
   function lockedAt() {
