@@ -23,21 +23,31 @@
   --accent: #1d6fa5;
   --font-display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
   --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --jam-opacity: .12;       /* page-wide raspberry jam backdrop */
+  --jam-hero-opacity: .42;  /* jam splatter in the hero */
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0b1117; --surface: #121b24; --ink: #e9eef2; --muted: #9aa7b3; --line: #22303c;
     --deep: #081a27; --deep-ink: #eef4f8; --sun: #f5bd35; --sun-ink: #1b1400; --accent: #5aaee3;
+    --jam-opacity: .2; --jam-hero-opacity: .5;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0b1117; --surface: #121b24; --ink: #e9eef2; --muted: #9aa7b3; --line: #22303c;
   --deep: #081a27; --deep-ink: #eef4f8; --sun: #f5bd35; --sun-ink: #1b1400; --accent: #5aaee3;
+  --jam-opacity: .2; --jam-hero-opacity: .5;
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
+
+/* Raspberry jam backdrop: a faint splatter pattern pinned behind the page content.
+   Cards and forms keep solid backgrounds, so text stays easy to read. */
+body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: url("assets/jam-splatter.svg") 0 0 / 900px auto repeat; opacity: var(--jam-opacity); }
+@media (max-width: 600px) { body::before { background-size: 620px auto; } }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.6; }
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.05; margin: 0; text-wrap: balance; }
 p { margin: 0; }
@@ -59,6 +69,8 @@ header { background: var(--deep); color: var(--deep-ink); }
 .hero { background: var(--deep); color: var(--deep-ink); position: relative; overflow: hidden; }
 .hero::after { content: ""; position: absolute; right: -120px; top: -140px; width: 420px; height: 420px; border-radius: 50%;
   background: radial-gradient(circle, var(--sun) 0%, transparent 68%); opacity: .35; pointer-events: none; }
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--jam-hero-opacity);
+  background: url("assets/jam-splatter-hero.svg") right -40px bottom -30px / min(820px, 115%) auto no-repeat; }
 .hero .wrap { position: relative; z-index: 1; padding-block: 56px 84px; display: grid; gap: 28px; }
 .hero h1 { font-size: clamp(44px, 8vw, 88px); font-weight: 800; letter-spacing: -.025em; max-width: 13ch; }
 .hero h1 em { font-style: normal; color: var(--sun); }
@@ -88,7 +100,7 @@ header { background: var(--deep); color: var(--deep-ink); }
 .price-note { margin-top: 20px; font-size: 14px; color: var(--muted); }
 
 /* How it works */
-.how { background: var(--surface); border-block: 1px solid var(--line); }
+.how { background: color-mix(in srgb, var(--surface) 82%, transparent); border-block: 1px solid var(--line); }
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 28px; list-style: none; padding: 0; margin: 0; counter-reset: step; }
 .steps li { counter-increment: step; display: grid; gap: 8px; }
 .steps li::before { content: counter(step); font-family: var(--font-display); font-weight: 800; font-size: 20px; width: 42px; height: 42px;
