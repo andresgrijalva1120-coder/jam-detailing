@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Cancel your JAM Detailing appointment online, up to 24 hours before.">
+<meta name="robots" content="noindex">
+<title>Cancel an Appointment · JAM Detailing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="index.html">JAM<span>.</span> Detailing</a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="index.html#services">Services</a>
+      <a href="index.html#how">How it works</a>
+      <a href="team.html">Meet the team</a>
+      <a href="index.html#book">Book</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow" style="color: #fff">Plans changed?</p>
+    <h1>Cancel an <em>appointment</em>.</h1>
+    <p>You can cancel online any time up to 24 hours before your appointment. Within 24 hours, please call or text us at (520) 000-0000.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap cancel-card">
+    <form id="cancel-form" novalidate>
+      <label for="c-code">Booking code<input id="c-code" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. K7M2QX9P"></label>
+      <p class="cancel-or">Don't have your code? Use the phone number and date you booked with instead.</p>
+      <div class="row">
+        <label for="c-phone">Phone<input id="c-phone" name="phone" type="tel" autocomplete="tel"></label>
+        <label for="c-date">Appointment date<input id="c-date" name="date" type="date"></label>
+      </div>
+      <button class="btn btn-sun" type="submit" id="c-submit">Cancel my appointment</button>
+      <div class="cancel-result" id="c-result" role="status" aria-live="polite" hidden></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 JAM Detailing · Mobile detailing in Tucson, AZ</span>
+    <span>(520) 000-0000 · jamdetailingaz@gmail.com · <a href="terms.html">Terms &amp; Conditions</a> · <a href="cancel.html">Cancel a booking</a></span>
+  </div>
+</footer>
+
+<script src="assets/config.js"></script>
+<script>
+  (function () {
+    var PHONE = '(520) 000-0000';
+    var form = document.getElementById('cancel-form');
+    var code = document.getElementById('c-code');
+    var phone = document.getElementById('c-phone');
+    var date = document.getElementById('c-date');
+    var btn = document.getElementById('c-submit');
+    var out = document.getElementById('c-result');
+    var confirming = false, busy = false;
+
+    var fromLink = new URLSearchParams(location.search).get('code');
+    if (fromLink) code.value = fromLink.toUpperCase();
+
+    function show(kind, title, text, html) {
+      out.hidden = false;
+      out.className = 'cancel-result' + (kind === 'ok' ? ' is-ok' : '');
+      out.innerHTML = '';
+      var s = document.createElement('strong'); s.textContent = title; out.appendChild(s);
+      var p = document.createElement('p'); p.textContent = text; out.appendChild(p);
+      if (html) { var x = document.createElement('p'); x.innerHTML = html; out.appendChild(x); }
+    }
+    function resetButton() { confirming = false; btn.textContent = 'Cancel my appointment'; btn.className = 'btn btn-sun'; }
+    [code, phone, date].forEach(function (el) { el.addEventListener('input', resetButton); });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (busy) return;
+      var c = code.value.trim(), ph = phone.value.trim(), d = date.value;
+      if (!c && !(ph && d)) {
+        show('err', 'We need a little more info', 'Enter your booking code, or your phone number and appointment date.');
+        return;
+      }
+      if (!JAM_CALENDAR_URL) {
+        show('err', 'Online cancelling isn’t available right now', 'Please call or text us at ' + PHONE + ' to cancel.');
+        return;
+      }
+      // Two taps to cancel, so nobody cancels by accident
+      if (!confirming) {
+        confirming = true;
+        btn.textContent = 'Tap again to confirm cancelling';
+        btn.className = 'btn btn-danger';
+        show('err', 'Are you sure?', 'This removes your appointment. If you still want to cancel, tap the button again.');
+        return;
+      }
+      busy = true; btn.disabled = true; btn.textContent = 'Cancelling...';
+      var q = c ? 'code=' + encodeURIComponent(c) : 'phone=' + encodeURIComponent(ph) + '&date=' + encodeURIComponent(d);
+      fetch(JAM_CALENDAR_URL + '?action=cancel&' + q)
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j.ok) {
+            show('ok', 'Your appointment is cancelled', 'Your appointment for ' + j.when + ' has been cancelled. Thanks for letting us know!',
+              'Want a different day? <a href="index.html#book">Book again</a>');
+            try { localStorage.removeItem('jam-booking-sent'); localStorage.removeItem('jam-booking-code'); } catch (err) {}
+            form.querySelectorAll('input').forEach(function (el) { el.disabled = true; });
+            btn.hidden = true;
+          } else if (j.reason === 'too_late') {
+            show('err', 'Too close to cancel online', 'Your appointment on ' + j.when + ' is less than 24 hours away, so it can\u2019t be cancelled online. Please call or text us at ' + PHONE + ' to cancel.',
+              '<a href="tel:5200000000">Call</a> · <a href="sms:5200000000">Text</a>');
+          } else {
+            show('err', 'We couldn’t find that booking', c
+              ? 'Double-check your booking code, or try your phone number and appointment date instead.'
+              : 'Make sure the phone number and date match your booking, or call or text us at ' + PHONE + '.');
+          }
+        })
+        .catch(function () {
+          show('err', 'Something went wrong', 'We couldn’t reach our booking system. Please try again in a minute, or call or text us at ' + PHONE + '.');
+        })
+        .finally(function () {
+          busy = false; btn.disabled = false;
+          if (!btn.hidden) resetButton();
+        });
+    });
+  })();
+</script>
+</body>
+</html>

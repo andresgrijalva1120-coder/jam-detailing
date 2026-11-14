@@ -289,3 +289,24 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: .8; cursor: poi
 .combo-list li[aria-selected="true"] { color: #fff; font-weight: 600; }
 .combo-list li.combo-empty { cursor: default; color: #9a9aa0; font-size: 14px; }
 .combo-list li.combo-empty:hover { background: none; }
+
+/* Booking code on the confirmation screen */
+.booking-code { display: grid; gap: 4px; justify-items: center; padding: 14px 18px; border: 1px dashed var(--rasp); border-radius: 12px; margin-top: 4px; }
+.booking-code[hidden] { display: none; }
+.booking-code span { font-size: 13px; color: #9a9aa0; }
+.booking-code strong { font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: .12em; color: #fff; user-select: all; }
+.booking-code a { color: var(--rasp); font-weight: 600; }
+.booking-code small { font-size: 12px; color: #9a9aa0; max-width: 32ch; }
+.contact a { color: var(--rasp); }
+
+/* Cancel page */
+.cancel-card { max-width: 520px; margin-inline: auto; }
+.cancel-card form { display: grid; gap: 16px; }
+.cancel-or { text-align: center; font-size: 13px; color: #9a9aa0; }
+.cancel-result { padding: 16px 18px; border-radius: 12px; border: 1px solid var(--line); border-left: 4px solid var(--rasp); background: #0a0a0b; display: grid; gap: 6px; }
+.cancel-result[hidden] { display: none; }
+.cancel-result.is-ok { border-left-color: #3ecf8e; }
+.cancel-result strong { font-size: 17px; }
+.cancel-result p { color: var(--muted); font-size: 15px; }
+.cancel-result a { color: var(--rasp); font-weight: 600; }
+.btn-danger { background: transparent; border-color: var(--rasp); color: #fff; }

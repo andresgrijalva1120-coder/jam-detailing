@@ -182,6 +182,7 @@
             <li>Catalina</li>
           </ul>
         </div>
+        <div class="contact"><span>Need to cancel?</span><strong><a href="cancel.html">Cancel your appointment</a></strong></div>
         <div class="contact"><span>Hours</span><strong>Mon–Fri: 4 PM – 8 PM<br>Sat–Sun: 9 AM – 6 PM</strong></div>
       </div>
     </div>
@@ -249,6 +250,7 @@
         </label>
       </div>
       <input type="hidden" name="vehicle" id="f-car" value="">
+      <input type="hidden" name="booking_code" id="f-code" value="">
       <fieldset class="addons">
         <legend>Add-ons <span class="opt">(optional)</span></legend>
         <label class="addon" id="addon-bed-wrap"><input type="checkbox" class="addon-box" value="Truck Bed Wash" data-price="20" id="addon-bed">
@@ -283,7 +285,12 @@
         <div class="form-done-icon" aria-hidden="true">✓</div>
         <h3 id="form-done-title">Request sent!</h3>
         <p id="form-done-text"></p>
-        <p class="form-done-small">Need to change something? Call or text us at <span style="white-space: nowrap">(520) 000-0000</span>.</p>
+        <div class="booking-code" id="done-code" hidden>
+          <span>Your booking code</span><strong id="done-code-value"></strong>
+          <a id="done-cancel-link" href="cancel.html">Need to cancel? Cancel online</a>
+          <small>Screenshot this. You can cancel online up to 24 hours before your appointment.</small>
+        </div>
+        <p class="form-done-small">Within 24 hours of your appointment, or to change something, call or text us at <span style="white-space: nowrap">(520) 000-0000</span>.</p>
       </div>
     </form>
   </div>
@@ -292,19 +299,13 @@
 <footer>
   <div class="wrap">
     <span>© 2026 JAM Detailing · Mobile detailing in Tucson, AZ</span>
-    <span>(520) 000-0000 · jamdetailingaz@gmail.com · <a href="terms.html">Terms &amp; Conditions</a></span>
+    <span>(520) 000-0000 · jamdetailingaz@gmail.com · <a href="terms.html">Terms &amp; Conditions</a> · <a href="cancel.html">Cancel a booking</a></span>
   </div>
 </footer>
 
+<script src="assets/config.js"></script>
 <script src="assets/vehicles.js"></script>
 <script>
-  // Google Calendar connection. Paste the Web app URL from Google Apps Script between the quotes.
-  // Leave it empty and the site works exactly as before (email only, no calendar).
-  var JAM_CALENDAR_URL = 'https://script.google.com/macros/s/AKfycbwdzTQZANuX-eznsgqaC4Ogvb2su4_it_NopODmW4XxQOqHrMQPo1EGGujDi7HZoH7BmA/exec';
-  // How long each package blocks on the calendar, in hours. Keep in sync with PACKAGE_HOURS in calendar-setup/Code.gs.
-  var JAM_PACKAGE_HOURS = { 'Raspberry Rinse': 1.5, 'Sweet Jam Interior Refresh': 1.5, 'Strawberry Shine Exterior Detail': 2,
-    'Berry Clean Deluxe': 2.5, 'The Full Jar Detail': 3, 'The Grand Slam Jam': 4 };
-  var JAM_DEFAULT_HOURS = 3;
 
   // Year / make / model pickers: tap to see the full list, or type to filter it.
   // Anything typed that isn't on the list is still accepted.
@@ -639,6 +640,23 @@
   var msg = document.getElementById('form-msg');
   var btn = document.getElementById('f-submit');
   var LOCK_KEY = 'jam-booking-sent';
+  var CODE_KEY = 'jam-booking-code';
+  // Short code the customer can use to cancel online (no look-alike letters like O/0, I/1)
+  function newCode() {
+    var abc = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', out = '';
+    var r = new Uint32Array(8);
+    (window.crypto || window.msCrypto).getRandomValues(r);
+    for (var i = 0; i < 8; i++) out += abc[r[i] % abc.length];
+    return out;
+  }
+  function showCode() {
+    var code = '';
+    try { code = localStorage.getItem(CODE_KEY) || ''; } catch (err) {}
+    if (!code || !JAM_CALENDAR_URL) return;
+    document.getElementById('done-code').hidden = false;
+    document.getElementById('done-code-value').textContent = code;
+    document.getElementById('done-cancel-link').href = 'cancel.html?code=' + code;
+  }
   var LOCK_HOURS = 4;
   var sending = false;
 
@@ -650,6 +668,7 @@
     form.classList.add('is-locked');
     form.querySelectorAll('input, select, textarea, button').forEach(function (el) { el.disabled = true; });
     var done = document.getElementById('form-done');
+    showCode();
     done.hidden = false;
     document.getElementById('form-done-title').textContent = justSent ? 'Request sent!' : 'Request already sent';
     document.getElementById('form-done-text').textContent = justSent
@@ -674,6 +693,7 @@
     btn.disabled = true;
     btn.textContent = 'Sending...';
     msg.hidden = true;
+    document.getElementById('f-code').value = newCode();
     var data = new FormData(form);
     data.delete('redirect');
     fetch('https://api.web3forms.com/submit', {
@@ -685,7 +705,7 @@
       .then(function (json) {
         if (json.success) {
           sendToCalendar(data);
-          try { localStorage.setItem(LOCK_KEY, String(Date.now())); } catch (err) {}
+          try { localStorage.setItem(LOCK_KEY, String(Date.now())); localStorage.setItem(CODE_KEY, data.get('booking_code')); } catch (err) {}
           lockForm(true);
           document.getElementById('form-done').scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
