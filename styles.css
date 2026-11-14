@@ -273,3 +273,19 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: .8; cursor: poi
 .terms-check a { color: var(--rasp); font-weight: 600; }
 
 .field-note { font-size: 13px; font-weight: 400; color: #9a9aa0; line-height: 1.45; }
+
+/* Year / make / model pickers */
+.field { display: grid; gap: 6px; min-width: 0; }
+.field > label { font-size: 14px; font-weight: 600; }
+.combo { position: relative; }
+.combo::after { content: ""; position: absolute; right: 16px; top: 50%; width: 8px; height: 8px; margin-top: -6px; border-right: 2px solid #9a9aa0; border-bottom: 2px solid #9a9aa0; transform: rotate(45deg); pointer-events: none; }
+.combo-input { padding-right: 40px; }
+.combo-input:disabled { opacity: .55; cursor: not-allowed; }
+.combo-list { position: absolute; z-index: 30; top: calc(100% + 4px); left: 0; right: 0; max-height: 260px; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  margin: 0; padding: 4px; list-style: none; background: #0f0f10; border: 1px solid var(--rasp); border-radius: 10px; box-shadow: 0 16px 36px -12px rgba(0,0,0,.8); }
+.combo-list[hidden] { display: none; }
+.combo-list li { padding: 11px 12px; border-radius: 8px; font-size: 16px; font-weight: 400; cursor: pointer; color: var(--ink); }
+.combo-list li:hover, .combo-list li.is-active { background: color-mix(in srgb, var(--rasp) 28%, #0f0f10); }
+.combo-list li[aria-selected="true"] { color: #fff; font-weight: 600; }
+.combo-list li.combo-empty { cursor: default; color: #9a9aa0; font-size: 14px; }
+.combo-list li.combo-empty:hover { background: none; }
