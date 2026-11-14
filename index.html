@@ -675,7 +675,23 @@
       ? "Thanks! We got your booking request and will reach out soon to confirm your time. No need to send it again."
       : "Looks like you already sent us a booking request. We'll reach out soon to confirm. No need to send another one.";
   }
-  if (lockedAt()) lockForm(false);
+  if (lockedAt()) {
+    lockForm(false);
+    // If the booking was cancelled (maybe from another phone or the email link), unlock the form so they can book again
+    var savedCode = '';
+    try { savedCode = localStorage.getItem(CODE_KEY) || ''; } catch (err) {}
+    if (savedCode && JAM_CALENDAR_URL) {
+      fetch(JAM_CALENDAR_URL + '?action=status&code=' + encodeURIComponent(savedCode))
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j && j.exists === false) {
+            try { localStorage.removeItem(LOCK_KEY); localStorage.removeItem(CODE_KEY); } catch (err) {}
+            location.reload();
+          }
+        })
+        .catch(function () {});
+    }
+  }
 
   // Adds the booking to Google Calendar (only when JAM_CALENDAR_URL is set). The email is still sent either way.
   function sendToCalendar(data) {

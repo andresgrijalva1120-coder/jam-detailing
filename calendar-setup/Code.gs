@@ -58,9 +58,11 @@ function whenText_(ev) {
 //   ?date=2026-11-20                         -> which times are taken that day
 //   ?action=cancel&code=AB12CD34             -> cancel by booking code
 //   ?action=cancel&phone=5205551234&date=... -> cancel by phone number + appointment date
+//   ?action=status&code=AB12CD34             -> is this booking still on the calendar? (lets the site unlock the form)
 function doGet(e) {
   var p = (e && e.parameter) || {};
   if (p.action === 'cancel') return json_(cancel_(p));
+  if (p.action === 'status') return json_({ exists: cleanCode_(p.code) ? !!findBooking_({ code: p.code }) : null });
 
   if (!validDate_(p.date)) return json_({ error: 'bad date' });
   var start = Utilities.parseDate(p.date + ' 00:00', TIME_ZONE, 'yyyy-MM-dd HH:mm');
