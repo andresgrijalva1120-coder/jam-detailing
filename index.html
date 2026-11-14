@@ -133,7 +133,7 @@
         <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
     </div>
-    <div class="size-prices" aria-labelledby="size-prices-title">
+    <div class="size-prices" id="size-prices" aria-labelledby="size-prices-title">
       <h3 id="size-prices-title">Vehicle size pricing</h3>
       <p>Package prices above are for a coupe or sedan. Bigger vehicles add a flat amount to any package. Tap your size to add it to your booking.</p>
       <ul>
@@ -280,7 +280,7 @@
 </footer>
 
 <script>
-  // Clicking a service card (or the "both" link) selects that service in the form and scrolls down to it.
+  // Clicking a service card selects that service in the form, then scrolls to the vehicle size box.
   (function () {
     var select = document.getElementById('f-service');
     var cards = document.querySelectorAll('.service[data-service]');
@@ -300,9 +300,10 @@
       select.value = value;
       if (window.jamUpdateQuote) window.jamUpdateQuote();
       mark(value);
-      document.getElementById('booking-form').scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
-      select.classList.remove('flash'); void select.offsetWidth; select.classList.add('flash');
-      setTimeout(function () { document.getElementById('f-name').focus({ preventScroll: true }); }, smooth ? 600 : 0);
+      // Next step: pick a vehicle size in the box right below the packages
+      var sizes = document.getElementById('size-prices');
+      sizes.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+      sizes.classList.remove('flash'); void sizes.offsetWidth; sizes.classList.add('flash');
     }
     cards.forEach(function (card) {
       card.addEventListener('click', function () { pick(card.dataset.service); });
@@ -317,7 +318,7 @@
     });
   })();
 
-  // Clicking a vehicle size tile picks that size in the form and scrolls down to it.
+  // Clicking a vehicle size tile picks that size in the form, then scrolls to the booking form.
   (function () {
     var size = document.getElementById('f-size');
     var tiles = document.querySelectorAll('.size-pick');
@@ -334,8 +335,9 @@
         size.value = t.dataset.size;
         if (window.jamUpdateQuote) window.jamUpdateQuote();
         mark();
-        size.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+        document.getElementById('booking-form').scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
         size.classList.remove('flash'); void size.offsetWidth; size.classList.add('flash');
+        setTimeout(function () { document.getElementById('f-name').focus({ preventScroll: true }); }, smooth ? 600 : 0);
       });
     });
     size.addEventListener('change', mark);
