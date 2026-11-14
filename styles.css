@@ -241,3 +241,33 @@ input[type="date"]::-webkit-calendar-picker-indicator { opacity: .8; cursor: poi
 @supports (-webkit-touch-callout: none) {   /* iPhone / iPad only */
   input[type="date"] { -webkit-appearance: none; appearance: none; }
 }
+
+/* Vehicle size pricing strip */
+.size-prices { margin-top: 28px; border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; background: linear-gradient(160deg, var(--surface-2), var(--surface)); display: grid; gap: 10px; }
+.size-prices h3 { font-size: 22px; font-weight: 800; }
+.size-prices p { color: var(--muted); font-size: 15px; }
+.size-prices ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.size-pick { width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; display: grid; gap: 2px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: #050505; transition: border-color .15s ease, transform .15s ease, background .15s ease; }
+.size-pick:hover { border-color: var(--rasp); transform: translateY(-2px); }
+.size-pick:focus-visible { outline: 3px solid var(--rasp); outline-offset: 3px; }
+.size-pick.is-picked { border: 2px solid var(--rasp); background: color-mix(in srgb, var(--rasp) 18%, #050505); }
+.size-prices li span { font-size: 14px; color: var(--muted); }
+.size-prices li b { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: #fff; font-variant-numeric: tabular-nums; }
+
+/* Air freshener scent picker */
+.scent { margin-left: 34px; }
+.scent[hidden] { display: none; }
+
+/* Terms link */
+.terms-line { font-size: 13px; color: #9a9aa0; }
+.terms-line a, footer a { color: var(--rasp); font-weight: 600; }
+.terms { max-width: 72ch; display: grid; gap: 28px; }
+.terms section { display: grid; gap: 10px; }
+.terms h2 { font-size: 24px; font-weight: 800; }
+.terms p, .terms li { color: var(--muted); }
+.terms ul { padding-left: 20px; display: grid; gap: 6px; margin: 0; }
+
+/* Terms agreement checkbox */
+.terms-check { display: flex; align-items: flex-start; gap: 10px; font-weight: 500; font-size: 14px; color: var(--muted); }
+.terms-check input { width: 20px; height: 20px; margin: 1px 0 0; flex: none; accent-color: var(--rasp); }
+.terms-check a { color: var(--rasp); font-weight: 600; }

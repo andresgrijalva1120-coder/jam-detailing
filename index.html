@@ -28,7 +28,7 @@
   <div class="wrap">
     <p class="eyebrow" style="color: #fff; text-shadow: 0 1px 10px rgba(0,0,0,.9)">Mobile car detailing · Tucson, AZ</p>
     <h1>Spreading <em>Shine</em> Across Arizona, One Vehicle at a Time.</h1>
-    <p class="lede">JAM Detailing comes to your home or work anywhere in Tucson. You keep your day, we bring the water, the tools, and the elbow grease.</p>
+    <p class="lede">JAM Detailing comes to your home or work anywhere in Tucson. You keep your day, we bring the tools and the elbow grease.</p>
     <div class="hero-actions">
       <a class="btn btn-sun" href="#book">Book a detail</a>
       <a class="btn btn-ghost" href="#services">See pricing</a>
@@ -46,7 +46,7 @@
     <div class="section-head">
       <p class="eyebrow">Services</p>
       <h2>Pick your jar of shine.</h2>
-      <p>Six packages, from a quick rinse to a showroom finish. Prices are starting points and depend on vehicle size and condition. You'll get a firm quote before any work starts.</p>
+      <p>Six packages, from a quick rinse to a showroom finish. Prices shown are for a coupe or sedan; larger vehicles add a little (see below). Final price depends on condition. You'll get a firm quote before any work starts.</p>
     </div>
     <div class="services">
       <article class="service is-signature" data-service="Raspberry Rinse (from $70)" role="button" tabindex="0" aria-label="Book Raspberry Rinse">
@@ -133,6 +133,17 @@
         <span class="pick">Book this package <span aria-hidden="true">→</span></span>
       </article>
     </div>
+    <div class="size-prices" aria-labelledby="size-prices-title">
+      <h3 id="size-prices-title">Vehicle size pricing</h3>
+      <p>Package prices above are for a coupe or sedan. Bigger vehicles add a flat amount to any package. Tap your size to add it to your booking.</p>
+      <ul>
+        <li><button type="button" class="size-pick" data-size="Coupe/Sedan" aria-pressed="false"><span>Coupe/Sedan</span><b>Base price</b></button></li>
+        <li><button type="button" class="size-pick" data-size="Small SUV" aria-pressed="false"><span>Small SUV</span><b>+$10</b></button></li>
+        <li><button type="button" class="size-pick" data-size="Truck" aria-pressed="false"><span>Truck</span><b>+$20</b></button></li>
+        <li><button type="button" class="size-pick" data-size="Large SUV" aria-pressed="false"><span>Large SUV</span><b>+$25</b></button></li>
+        <li><button type="button" class="size-pick" data-size="MiniVan" aria-pressed="false"><span>MiniVan</span><b>+$25</b></button></li>
+      </ul>
+    </div>
     <p class="price-note">Not sure which one fits? Pick the closest package and tell us about your car in the form. We'll recommend the right one.</p>
     <div class="pay-note" role="note">
       <strong>How payment works</strong>
@@ -212,11 +223,11 @@
         <label for="f-size">Vehicle size
           <select id="f-size" name="vehicle_size" required>
             <option value="" disabled selected>Choose a size</option>
-            <option>Coupe/Sedan</option>
-            <option>Small SUV</option>
-            <option>Truck</option>
-            <option>Large SUV</option>
-            <option>MiniVan</option>
+            <option value="Coupe/Sedan" data-price="0">Coupe/Sedan (base price)</option>
+            <option value="Small SUV" data-price="10">Small SUV (+$10)</option>
+            <option value="Truck" data-price="20">Truck (+$20)</option>
+            <option value="Large SUV" data-price="25">Large SUV (+$25)</option>
+            <option value="MiniVan" data-price="25">MiniVan (+$25)</option>
           </select>
         </label>
       </div>
@@ -224,8 +235,15 @@
         <legend>Add-ons <span class="opt">(optional)</span></legend>
         <label class="addon" id="addon-bed-wrap"><input type="checkbox" class="addon-box" value="Truck Bed Wash" data-price="35" id="addon-bed">
           <span class="addon-name">Truck Bed Wash<small id="addon-bed-note">Trucks only</small></span><span class="addon-price">+$35</span></label>
-        <label class="addon"><input type="checkbox" class="addon-box" value="Air Freshener" data-price="10">
-          <span class="addon-name">Air Freshener</span><span class="addon-price">+$10</span></label>
+        <label class="addon"><input type="checkbox" class="addon-box" value="Air Freshener" data-price="10" id="addon-fresh">
+          <span class="addon-name">Air Freshener<small>Black Cherry, Mango or Black Ice</small></span><span class="addon-price">+$10</span></label>
+        <label class="scent" for="f-scent" id="scent-wrap" hidden>Air freshener scent
+          <select id="f-scent" name="air_freshener_scent" disabled>
+            <option>Black Cherry</option>
+            <option>Mango</option>
+            <option>Black Ice</option>
+          </select>
+        </label>
         <input type="hidden" name="add_ons" id="f-addons" value="None">
       </fieldset>
       <label for="f-notes">Anything we should know?<textarea id="f-notes" name="notes" placeholder="Pet hair, gate code, where to park..."></textarea></label>
@@ -239,6 +257,8 @@
         <strong>Payment is in person</strong>
         <p>Nothing is charged online. You'll pay face to face at your appointment, before cleaning starts. As a brand-new business we're keeping it simple for now, and more payment options are coming soon.</p>
       </div>
+      <label class="terms-check" for="f-terms"><input type="checkbox" id="f-terms" name="agreed_to_terms" value="Yes" required>
+        <span>I have read and agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>.</span></label>
       <button class="btn btn-sun" type="submit" id="f-submit">Send booking request</button>
       <p class="form-msg" id="form-msg" role="status" hidden></p>
       <div class="form-done" id="form-done" role="status" hidden>
@@ -254,7 +274,7 @@
 <footer>
   <div class="wrap">
     <span>© 2026 JAM Detailing · Mobile detailing in Tucson, AZ</span>
-    <span>(520) 000-0000 · jamdetailingaz@gmail.com</span>
+    <span>(520) 000-0000 · jamdetailingaz@gmail.com · <a href="terms.html">Terms &amp; Conditions</a></span>
   </div>
 </footer>
 
@@ -294,6 +314,31 @@
     select.addEventListener('change', function () {
       mark(select.value);
     });
+  })();
+
+  // Clicking a vehicle size tile picks that size in the form and scrolls down to it.
+  (function () {
+    var size = document.getElementById('f-size');
+    var tiles = document.querySelectorAll('.size-pick');
+    var smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function mark() {
+      tiles.forEach(function (t) {
+        var on = t.dataset.size === size.value;
+        t.classList.toggle('is-picked', on);
+        t.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+    }
+    tiles.forEach(function (t) {
+      t.addEventListener('click', function () {
+        size.value = t.dataset.size;
+        if (window.jamUpdateQuote) window.jamUpdateQuote();
+        mark();
+        size.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+        size.classList.remove('flash'); void size.offsetWidth; size.classList.add('flash');
+      });
+    });
+    size.addEventListener('change', mark);
+    document.getElementById('booking-form').addEventListener('reset', function () { setTimeout(mark, 0); });
   })();
 
   // Don't allow booking a day in the past
@@ -337,6 +382,9 @@
     var size = document.getElementById('f-size');
     var boxes = document.querySelectorAll('.addon-box');
     var bed = document.getElementById('addon-bed');
+    var fresh = document.getElementById('addon-fresh');
+    var scent = document.getElementById('f-scent');
+    var scentWrap = document.getElementById('scent-wrap');
     var lines = document.getElementById('quote-lines');
     var total = document.getElementById('quote-total');
     var note = document.getElementById('quote-note');
@@ -356,24 +404,38 @@
       var base = opt.dataset.price ? Number(opt.dataset.price) : null;
       var html = row(pkgName, base === null ? 'Quote' : money(base));
       var extras = 0, picked = [];
+      // Vehicle size upcharge
+      var sizeOpt = size.options[size.selectedIndex];
+      if (size.value && sizeOpt.dataset.price !== undefined) {
+        var up = Number(sizeOpt.dataset.price);
+        extras += up;
+        html += row('Vehicle size: ' + size.value, up ? '+' + money(up) : 'Included');
+      }
+      // Air freshener scent picker shows only when the add-on is ticked
+      scentWrap.hidden = !fresh.checked;
+      scent.disabled = !fresh.checked;
       boxes.forEach(function (b) {
-        if (b.checked) { extras += Number(b.dataset.price); picked.push(b.value); html += row(b.value, '+' + money(b.dataset.price)); }
+        if (!b.checked) return;
+        var name = b === fresh ? b.value + ' (' + scent.value + ')' : b.value;
+        extras += Number(b.dataset.price); picked.push(name); html += row(name, '+' + money(b.dataset.price));
       });
       lines.innerHTML = html;
       addonsField.value = picked.length ? picked.join(', ') : 'None';
       if (base === null) {
         total.textContent = extras ? money(extras) + ' + package quote' : 'Quoted after we see your car';
+        // (size upcharge and add-ons are counted in extras)
         totalField.value = total.textContent;
         note.textContent = "We'll quote this package after seeing your vehicle. Add-on prices are listed above.";
       } else {
         total.textContent = 'From ' + money(base + extras);
         totalField.value = total.textContent;
-        note.textContent = "Starting prices. We'll confirm your final price after seeing your vehicle's size and condition.";
+        note.textContent = "Starting price including your vehicle size. We'll confirm the final price after seeing your vehicle's condition.";
       }
     }
     service.addEventListener('change', update);
     size.addEventListener('change', update);
     boxes.forEach(function (b) { b.addEventListener('change', update); });
+    scent.addEventListener('change', update);
     document.getElementById('booking-form').addEventListener('reset', function () { setTimeout(update, 0); });
     window.jamUpdateQuote = update;
     update();
