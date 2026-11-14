@@ -298,6 +298,14 @@
 
 <script src="assets/vehicles.js"></script>
 <script>
+  // Google Calendar connection. Paste the Web app URL from Google Apps Script between the quotes.
+  // Leave it empty and the site works exactly as before (email only, no calendar).
+  var JAM_CALENDAR_URL = '';
+  // How long each package blocks on the calendar, in hours. Keep in sync with PACKAGE_HOURS in calendar-setup/Code.gs.
+  var JAM_PACKAGE_HOURS = { 'Raspberry Rinse': 1.5, 'Sweet Jam Interior Refresh': 1.5, 'Strawberry Shine Exterior Detail': 2,
+    'Berry Clean Deluxe': 2.5, 'The Full Jar Detail': 3, 'The Grand Slam Jam': 4 };
+  var JAM_DEFAULT_HOURS = 3;
+
   // Year / make / model pickers: tap to see the full list, or type to filter it.
   // Anything typed that isn't on the list is still accepted.
   (function () {
@@ -492,11 +500,47 @@
 
   // Time slots follow the work hours for the chosen day.
   // Weekdays 4 PM to 8 PM, weekends 9 AM to 6 PM (start times end an hour before closing).
+  // When the calendar is connected, times that would overlap an existing appointment are grayed out.
   (function () {
     var HOURS = { weekday: [16, 19], weekend: [9, 17] };   // first and last start hour, 24h clock
     var date = document.getElementById('f-date');
     var time = document.getElementById('f-time');
+    var service = document.getElementById('f-service');
+    var busyCache = {};
     function label(h) { return (h % 12 || 12) + ':00 ' + (h < 12 ? 'AM' : 'PM'); }
+    function jobMinutes() {
+      var v = service.value || '';
+      for (var k in JAM_PACKAGE_HOURS) if (v.indexOf(k) === 0) return JAM_PACKAGE_HOURS[k] * 60;
+      return JAM_DEFAULT_HOURS * 60;
+    }
+    // Gray out slots that are in the past (today) or overlap a booked appointment
+    function markTaken() {
+      if (!date.value) return;
+      var busy = busyCache[date.value] || [];
+      var len = jobMinutes();
+      var now = new Date();
+      var today = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10) === date.value;
+      var nowMin = now.getHours() * 60 + now.getMinutes();
+      for (var i = 0; i < time.options.length; i++) {
+        var o = time.options[i];
+        var h = Number(o.dataset.hour);
+        if (isNaN(h) || o.dataset.hour === undefined) continue;
+        var s = h * 60, f = s + len;
+        var past = today && s <= nowMin + 30;
+        var taken = busy.some(function (b) { return s < b[1] && f > b[0]; });
+        o.disabled = past || taken;
+        o.text = label(h) + (taken ? ' (booked)' : past ? ' (passed)' : '');
+        if (o.disabled && o.selected) time.selectedIndex = 0;
+      }
+    }
+    function loadBusy() {
+      var d = date.value;
+      if (!JAM_CALENDAR_URL || !d || busyCache[d]) { markTaken(); return; }
+      fetch(JAM_CALENDAR_URL + '?date=' + encodeURIComponent(d))
+        .then(function (r) { return r.json(); })
+        .then(function (j) { if (j && j.busy) { busyCache[d] = j.busy; if (date.value === d) markTaken(); } })
+        .catch(function () { /* calendar unreachable: leave every slot open */ });
+    }
     function fill() {
       var prev = time.value;
       time.innerHTML = '';
@@ -510,13 +554,17 @@
       var range = (day === 0 || day === 6) ? HOURS.weekend : HOURS.weekday;
       time.disabled = false;
       time.add(new Option('Choose a time', '', true, true)); time.options[0].disabled = true;
-      for (var h = range[0]; h <= range[1]; h++) time.add(new Option(label(h)));
+      for (var h = range[0]; h <= range[1]; h++) { var o = new Option(label(h), label(h)); o.dataset.hour = h; time.add(o); }
       time.add(new Option('Flexible, any time works'));
       for (var i = 0; i < time.options.length; i++) if (time.options[i].value === prev && prev) time.selectedIndex = i;
+      markTaken();
+      loadBusy();
     }
     date.addEventListener('change', fill);
     date.addEventListener('input', fill);
+    service.addEventListener('change', markTaken);
     document.getElementById('booking-form').addEventListener('reset', function () { setTimeout(fill, 0); });
+    window.jamRefreshSlots = function () { busyCache = {}; fill(); };
   })();
 
   // Add-ons and live price quote
@@ -610,6 +658,14 @@
   }
   if (lockedAt()) lockForm(false);
 
+  // Adds the booking to Google Calendar (only when JAM_CALENDAR_URL is set). The email is still sent either way.
+  function sendToCalendar(data) {
+    if (!JAM_CALENDAR_URL) return;
+    var body = new URLSearchParams();
+    data.forEach(function (v, k) { if (k !== 'access_key' && k !== 'subject' && k !== 'from_name') body.append(k, v); });
+    fetch(JAM_CALENDAR_URL, { method: 'POST', mode: 'no-cors', keepalive: true, body: body }).catch(function () {});
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (sending || lockedAt()) return;          // ignore double-clicks and repeat sends
@@ -628,6 +684,7 @@
       .then(function (res) { return res.json(); })
       .then(function (json) {
         if (json.success) {
+          sendToCalendar(data);
           try { localStorage.setItem(LOCK_KEY, String(Date.now())); } catch (err) {}
           lockForm(true);
           document.getElementById('form-done').scrollIntoView({ behavior: 'smooth', block: 'center' });
